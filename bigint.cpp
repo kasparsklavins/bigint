@@ -1,9 +1,14 @@
+#include <string>
+#include <sstream>
+#include <map>
 #include "bigint.h"
 
 //Constructor
 bigint::bigint() {
 	positive = true;
-	number.reserve(1024);
+    base = 1000000000;
+    skip = 0;
+//	number.reserve(1024);
 }
 //Adding
 bigint bigint::operator+(bigint const &b) {
@@ -36,6 +41,10 @@ bigint& bigint::operator+=(bigint const &b) {
 	}
 	if(sum) number.push_back(1);
 	return *this;
+}
+bigint bigint::operator+(long long const &b) {
+	bigint c = *this;
+	return c+=b;
 }
 bigint& bigint::operator+=(long long b) {
 	vector<int>::iterator it = number.begin();
@@ -171,7 +180,7 @@ bool bigint::operator<(bigint const &a) const {
 	if(!positive && !a.positive) value = false;
 	if(number.size() < a.number.size()) return value;
 	if(number.size() > a.number.size()) return !value;
-	for(int i(0); i < number.size(); i++) {
+	for(unsigned int i(0); i < number.size(); i++) {
 		if(number[i] < a.number[i]) return value;
 		if(number[i] > a.number[i]) return !value;
 	}
@@ -180,7 +189,7 @@ bool bigint::operator<(bigint const &a) const {
 bool bigint::operator==(bigint const &a) const {
 	if(positive != a.positive) return false;
 	if(number.size() != a.number.size()) return false;
-	for(int i(0); i < number.size(); i++) {
+	for(unsigned int i(0); i < number.size(); i++) {
 		if(number[i] != a.number[i]) return false;
 	}
 	return true;
@@ -246,6 +255,10 @@ string bigint::toString() {
 		if(*it) stream << *it;
 	}
 	return stream.str();
+}
+bigint& bigint::abs() {
+	positive = true;
+	return *this;
 }
 
 //Input&Output

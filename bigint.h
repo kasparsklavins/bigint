@@ -1,20 +1,15 @@
-#ifndef BIGINT_H
-#define BIGINT_H
-
-
-#include <iostream>
-#include <string>
 #include <vector>
-#include <sstream>
+#include <iostream>
 #include <map>
+
 using namespace std;
 
 class bigint {
 private:
 	vector<int> number;
     bool positive;
-    int base = 1000000000;
-    int skip = 0;
+    int base;
+    unsigned int skip;
 
 public:
 	//Magic methods
@@ -23,6 +18,7 @@ public:
 	//Adding
 	bigint operator+(bigint const &b);
 	bigint& operator+=(bigint const &b);
+	bigint operator+(long long const &b);
 	bigint& operator+=(long long b);
 
 	//Subtraction
@@ -55,6 +51,7 @@ public:
     //Helpers
     void clear();
     string toString();
+    bigint& abs();
 
 	//Power
 	bigint& pow(int const &power);
@@ -67,6 +64,3 @@ public:
 private:
 	int segmentLength(int segment);
 };
-
-
-#endif
