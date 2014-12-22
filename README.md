@@ -67,21 +67,21 @@ a = 4558;
 str = a.pow(486).toString();
 ```
 ##Abs
-Absolute value
+Absolute value.
 ```C++
 bigint a;
 a = -4558;
 cout << a.abs() // 4558
 ```
 ##Power
-Raises to the power of N (a*a*a*a...)
+Raises to the power of N.
 ```C++
 bigint a;
 a = 4558;
 cout << a.pow(486);
 ```
 ##Digits
-Returns the number of digits
+Returns the number of digits.
 ```C++
 bigint a;
 a = 4558;
@@ -89,7 +89,7 @@ a.pow(486);
 cout << a.digits(); //1779
 ```
 ##Trailing
-Returns the number of trailing zeros;
+Returns the number of trailing zeros.
 ```C++
 bigint a;
 a = 4558;
