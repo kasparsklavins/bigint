@@ -1,3 +1,23 @@
+* [Description](#description)
+* [Operators](#operators)
+  * [Addition](#addition)
+  * [Subtraction](#subtraction)
+  * [Multiplication](#multiplication)
+  * [Allocation](#allocation)
+  * [Comparison](#comparison)
+  * [Access](#access)
+  * [Streaming operators](#streaming-operators)
+* [Methods](#methods)
+  * [clear](#clear)
+  * [toString](#toString)
+  * [abs](#abs)
+  * [pow](#pown)
+  * [digits](#digits)
+  * [trailingZeros](#trailingZeros)
+
+#Description
+Bigint class provides math operations for arbitrarily large numbers. You know the limit is reached when your computer freezes.
+
 #Operators
 ##Addition
 ```C++
@@ -26,7 +46,7 @@ c *= 6;
 bigint a;
 a = 159753;
 ```
-##Comparise
+##Comparison
 ```C++
 bigint a,b;
 a = 159753;
@@ -42,14 +62,14 @@ a = 159753;
 a.pow(15); //a^15, 1126510743106482...
 cout << a[3]; // 6 is the 4th digit
 ```
-##Input & Output
+##Streaming operators
 ```C++
 bigint a,b;
 cin >> a >> b;
 cout << a*b;
 ```
 #Methods
-##Clear
+##clear()
 Clears the bigint, essentially making it equal to 0.
 ```C++
 bigint a;
@@ -58,7 +78,7 @@ cout << a.pow(486);;  //1459889316343...
 a.clear();
 cout << a; //0
 ```
-##toString
+##toString()
 Convers bigint to a string.
 ```C++
 string str;
@@ -66,21 +86,21 @@ bigint a;
 a = 4558;
 str = a.pow(486).toString();
 ```
-##Abs
+##abs()
 Absolute value.
 ```C++
 bigint a;
 a = -4558;
 cout << a.abs() // 4558
 ```
-##Power
+##pow(n)
 Raises to the power of N.
 ```C++
 bigint a;
 a = 4558;
 cout << a.pow(486);
 ```
-##Digits
+##digits()
 Returns the number of digits.
 ```C++
 bigint a;
@@ -88,7 +108,7 @@ a = 4558;
 a.pow(486);
 cout << a.digits(); //1779
 ```
-##Trailing
+##trailingZeros()
 Returns the number of trailing zeros.
 ```C++
 bigint a;
