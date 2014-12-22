@@ -1,12 +1,13 @@
+#ifndef BIGINT_H_
+#define BIGINT_H_
+
 #include <vector>
 #include <iostream>
 #include <map>
 
-using namespace std;
-
 class bigint {
 private:
-	vector<int> number;
+	std::vector<int> number;
     bool positive;
     int base;
     unsigned int skip;
@@ -45,17 +46,17 @@ public:
 	int operator[](int const &b);
 
 	//Input&Output
-    friend istream &operator>>(istream &in, bigint &a);
-    friend ostream &operator<<(ostream &out, bigint a);
+    friend std::istream &operator>>(std::istream &in, bigint &a);
+    friend std::ostream &operator<<(std::ostream &out, bigint a);
 
     //Helpers
     void clear();
-    string toString();
+    std::string toString();
     bigint& abs();
 
 	//Power
 	bigint& pow(int const &power);
-	bigint pow(int const &power, map<int, bigint> &lookup);
+	bigint pow(int const &power, std::map<int, bigint> &lookup);
 
     //Trivia
 	int digits();
@@ -64,3 +65,5 @@ public:
 private:
 	int segmentLength(int segment);
 };
+
+#endif

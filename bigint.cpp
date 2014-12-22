@@ -20,9 +20,9 @@ bigint& bigint::operator+=(bigint const &b) {
 		*this -= b;
 		return *this;
 	}
-	vector<int>::iterator
+	std::vector<int>::iterator
 		it1 = number.begin();
-	vector<int>::const_iterator
+	std::vector<int>::const_iterator
 		it2 = b.number.begin();
 	int sum = 0;
 	while(it1 != number.end() || it2 != b.number.end()) {
@@ -47,7 +47,7 @@ bigint bigint::operator+(long long const &b) {
 	return c+=b;
 }
 bigint& bigint::operator+=(long long b) {
-	vector<int>::iterator it = number.begin();
+	std::vector<int>::iterator it = number.begin();
 	if(skip > number.size()) {
 		number.insert(number.end(), skip-number.size(), 0);
 	}
@@ -73,9 +73,9 @@ bigint bigint::operator-(bigint const &b) {
 	return c-=b;
 }
 bigint& bigint::operator-=(bigint const &b) {
-	vector<int>::iterator
+	std::vector<int>::iterator
 		it1 = number.begin();
-	vector<int>::const_iterator
+	std::vector<int>::const_iterator
 		it2 = b.number.begin();
 	int dif = 0;
 	while(it1 != number.end() || it2 != b.number.end()) {
@@ -102,8 +102,8 @@ bigint& bigint::operator-=(bigint const &b) {
 //Multiplication
 bigint bigint::operator*(bigint const &b) {
 	if(b.number.size() == 1) return *this *= b.number[0];
-	vector<int>::iterator it1;
-	vector<int>::const_iterator it2;
+	std::vector<int>::iterator it1;
+	std::vector<int>::const_iterator it2;
 	bigint c;
 	for(it1 = number.begin(); it1 != number.end(); ++it1) {
 		for(it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
@@ -123,7 +123,7 @@ bigint bigint::operator*(long long const &b) {
 	return c *= b;
 }
 bigint& bigint::operator*=(int const &b) {
-	vector<int>::iterator it = number.begin();
+	std::vector<int>::iterator it = number.begin();
 	long long sum = 0;
 	while(it != number.end()) {
 		sum += (long long)(*it)*b;
@@ -136,7 +136,7 @@ bigint& bigint::operator*=(int const &b) {
 }
 
 //Power
-bigint bigint::pow(int const &power, map<int, bigint> &lookup) {
+bigint bigint::pow(int const &power, std::map<int, bigint> &lookup) {
 	if(power == 1) 			return *this;
 	if(lookup.count(power)) return lookup[power];
 
@@ -150,7 +150,7 @@ bigint bigint::pow(int const &power, map<int, bigint> &lookup) {
 	return lookup[power];
 }
 bigint& bigint::pow(int const &power) {
-	map<int, bigint> lookup;
+	std::map<int, bigint> lookup;
 	*this = pow(power, lookup);
 	return *this;
 }
@@ -165,10 +165,9 @@ bigint bigint::operator%(bigint const &b) {
 		c = 1;
 		return c;
 	}
-	vector<int>::reverse_iterator it = number.rbegin();
-	vector<int>::const_reverse_iterator it2 = b.number.rbegin();
+	std::vector<int>::reverse_iterator it = number.rbegin();
+	std::vector<int>::const_reverse_iterator it2 = b.number.rbegin();
 	bigint t;
-//	t.number.assign()
 	return *this;
 }
 
@@ -222,7 +221,7 @@ int bigint::digits() {
 int bigint::trailingZeros() {
 	if(number.empty() || (number.size() == 1 && number[0] == 0)) return 1;
 	int zeros = 0;
-	vector<int>::const_iterator it = number.begin();
+	std::vector<int>::const_iterator it = number.begin();
 	if(number.size() > 1) {
 		for(; it != number.end()-1 && *it == 0; ++it) {
 			zeros += 9;
@@ -242,12 +241,12 @@ void bigint::clear() {
 	positive = true;
 	skip = 0;
 }
-string bigint::toString() {
-	stringstream stream;
+std::string bigint::toString() {
+	std::stringstream stream;
 	while(number.size() && number.back() == 0) number.pop_back();
 	if(!number.size()) return "0";
 	if(!positive) stream << '-';
-	vector<int>::const_reverse_iterator it = number.rbegin();
+	std::vector<int>::const_reverse_iterator it = number.rbegin();
 	stream << *it;
 	if(it != number.rend()) ++it;
 	for(;it != number.rend(); ++it) {
@@ -262,12 +261,12 @@ bigint& bigint::abs() {
 }
 
 //Input&Output
-ostream &operator<<(ostream &out, bigint a) {
+std::ostream &operator<<(std::ostream &out, bigint a) {
 	out << a.toString();
 	return out;
 }
-istream &operator>>(istream &in, bigint &a) {
-	string str;
+std::istream &operator>>(std::istream &in, bigint &a) {
+	std::string str;
 	in >> str;
 	int size = str.length();
 	if(str[0] == '-') a.positive = false;
