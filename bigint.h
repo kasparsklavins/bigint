@@ -1,6 +1,5 @@
 #ifndef BIGINT_H_
 #define BIGINT_H_
-
 #include <vector>
 #include <iostream>
 #include <map>
@@ -37,6 +36,9 @@ public:
 
 	//Compare
 	bool operator<(const bigint &a) const;
+	bool operator>(const bigint &a) const;
+	bool operator<=(const bigint &a) const;
+	bool operator>=(const bigint &a) const;
 	bool operator==(const bigint &a) const;
 
 	//Allocation
@@ -51,19 +53,17 @@ public:
 
     //Helpers
     void clear();
-    std::string toString();
+    std::string to_string();
     bigint& abs();
 
 	//Power
 	bigint& pow(int const &power);
-	bigint pow(int const &power, std::map<int, bigint> &lookup);
 
     //Trivia
 	int digits();
-	int trailingZeros();
-
+	int trailing_zeros();
 private:
-	int segmentLength(int segment);
+	int segment_length(int segment);
+	bigint pow(int const &power, std::map<int, bigint> &lookup);
 };
-
 #endif

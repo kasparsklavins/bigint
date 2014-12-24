@@ -3,6 +3,7 @@
 #include <map>
 #include "bigint.h"
 
+
 //Constructor
 bigint::bigint() {
 	positive = true;
@@ -17,8 +18,11 @@ bigint bigint::operator+(bigint const &b) {
 }
 bigint& bigint::operator+=(bigint const &b) {
 	if(b.positive == false) {
-		*this -= b;
-		return *this;
+//		*this -= b;
+		return *this-=b;
+	}
+	if(b.positive == false && positive) {
+		positive = false;
 	}
 	std::vector<int>::iterator
 		it1 = number.begin();
@@ -185,6 +189,45 @@ bool bigint::operator<(bigint const &a) const {
 	}
 	return false; // ==
 }
+bool bigint::operator<=(bigint const &a) const {
+	if(positive && !a.positive) return false;
+	if(!positive && a.positive) return true;
+	bool value = true;
+	if(!positive && !a.positive) value = false;
+	if(number.size() < a.number.size()) return value;
+	if(number.size() > a.number.size()) return !value;
+	for(unsigned int i(0); i < number.size(); i++) {
+		if(number[i] < a.number[i]) return value;
+		if(number[i] > a.number[i]) return !value;
+	}
+	return true; // ==
+}
+bool bigint::operator>(bigint const &a) const {
+	if(positive && !a.positive) return true;
+	if(!positive && a.positive) return false;
+	bool check = false;
+	if(!positive && !a.positive) check = true;
+	if(number.size() < a.number.size()) return check;
+	if(number.size() > a.number.size()) return check;
+	for(unsigned int i(0); i < number.size(); i++) {
+		if(number[i] < a.number[i]) return check;
+		if(number[i] < a.number[i]) return !check;
+	}
+	return false; // ==
+}
+bool bigint::operator>=(bigint const &a) const {
+	if(positive && !a.positive) return true;
+	if(!positive && a.positive) return false;
+	bool check = false;
+	if(!positive && !a.positive) check = true;
+	if(number.size() < a.number.size()) return check;
+	if(number.size() > a.number.size()) return check;
+	for(unsigned int i(0); i < number.size(); i++) {
+		if(number[i] < a.number[i]) return check;
+		if(number[i] < a.number[i]) return !check;
+	}
+	return false; // ==
+}
 bool bigint::operator==(bigint const &a) const {
 	if(positive != a.positive) return false;
 	if(number.size() != a.number.size()) return false;
@@ -207,7 +250,7 @@ bigint bigint::operator=(const long long &a) {
 
 //Access
 int bigint::operator[](int const &b) {
-	return toString()[b]-'0';
+	return to_string()[b]-'0';
 }
 
 //Trivia
@@ -215,10 +258,10 @@ int bigint::digits() {
 	int segments = number.size();
 	if(segments == 0) return 0;
 	int digits = 9*(segments-1);
-	digits += segmentLength(number.back());
+	digits += segment_length(number.back());
 	return digits;
 }
-int bigint::trailingZeros() {
+int bigint::trailing_zeros() {
 	if(number.empty() || (number.size() == 1 && number[0] == 0)) return 1;
 	int zeros = 0;
 	std::vector<int>::const_iterator it = number.begin();
@@ -241,7 +284,7 @@ void bigint::clear() {
 	positive = true;
 	skip = 0;
 }
-std::string bigint::toString() {
+std::string bigint::to_string() {
 	std::stringstream stream;
 	while(number.size() && number.back() == 0) number.pop_back();
 	if(!number.size()) return "0";
@@ -250,7 +293,7 @@ std::string bigint::toString() {
 	stream << *it;
 	if(it != number.rend()) ++it;
 	for(;it != number.rend(); ++it) {
-		for(int i(0), len = segmentLength(*it); i < 9-len; ++i) stream << '0';
+		for(int i(0), len = segment_length(*it); i < 9-len; ++i) stream << '0';
 		if(*it) stream << *it;
 	}
 	return stream.str();
@@ -262,7 +305,7 @@ bigint& bigint::abs() {
 
 //Input&Output
 std::ostream &operator<<(std::ostream &out, bigint a) {
-	out << a.toString();
+	out << a.to_string();
 	return out;
 }
 std::istream &operator>>(std::istream &in, bigint &a) {
@@ -288,7 +331,7 @@ std::istream &operator>>(std::istream &in, bigint &a) {
 	}
 	return in;
 }
-int bigint::segmentLength(int segment) {
+int bigint::segment_length(int segment) {
 	int length = 0;
 	while(segment) {
 		segment /= 10;
@@ -296,3 +339,4 @@ int bigint::segmentLength(int segment) {
 	}
 	return length;
 }
+
