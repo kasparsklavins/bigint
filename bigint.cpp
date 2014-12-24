@@ -3,7 +3,6 @@
 #include <map>
 #include "bigint.h"
 
-
 //Constructor
 bigint::bigint() {
 	positive = true;
@@ -12,7 +11,7 @@ bigint::bigint() {
 //	number.reserve(1024);
 }
 //Adding
-bigint bigint::operator+(bigint const &b) {
+bigint bigint::operator+(bigint const &b) const {
 	bigint c = *this;
 	return c+=b;
 }
@@ -46,7 +45,7 @@ bigint& bigint::operator+=(bigint const &b) {
 	if(sum) number.push_back(1);
 	return *this;
 }
-bigint bigint::operator+(long long const &b) {
+bigint bigint::operator+(long long const &b) const {
 	bigint c = *this;
 	return c+=b;
 }
@@ -72,7 +71,7 @@ bigint& bigint::operator+=(long long b) {
 }
 
 //Subtraction
-bigint bigint::operator-(bigint const &b) {
+bigint bigint::operator-(bigint const &b) const {
 	bigint c = *this;
 	return c-=b;
 }
@@ -176,65 +175,42 @@ bigint bigint::operator%(bigint const &b) {
 }
 
 //Compare
-bool bigint::operator<(bigint const &a) const {
-	if(positive && !a.positive) return false;
-	if(!positive && a.positive) return true;
-	bool value = true;
-	if(!positive && !a.positive) value = false;
-	if(number.size() < a.number.size()) return value;
-	if(number.size() > a.number.size()) return !value;
-	for(unsigned int i(0); i < number.size(); i++) {
-		if(number[i] < a.number[i]) return value;
-		if(number[i] > a.number[i]) return !value;
-	}
-	return false; // ==
-}
-bool bigint::operator<=(bigint const &a) const {
-	if(positive && !a.positive) return false;
-	if(!positive && a.positive) return true;
-	bool value = true;
-	if(!positive && !a.positive) value = false;
-	if(number.size() < a.number.size()) return value;
-	if(number.size() > a.number.size()) return !value;
-	for(unsigned int i(0); i < number.size(); i++) {
-		if(number[i] < a.number[i]) return value;
-		if(number[i] > a.number[i]) return !value;
-	}
-	return true; // ==
-}
-bool bigint::operator>(bigint const &a) const {
-	if(positive && !a.positive) return true;
-	if(!positive && a.positive) return false;
-	bool check = false;
-	if(!positive && !a.positive) check = true;
-	if(number.size() < a.number.size()) return check;
+int bigint::compare(const bigint &a) const {  //0 this == a || -1 this < a || 1 this > a
+	if(positive && !a.positive) return 1;
+	if(!positive && a.positive) return -1;
+
+	int check = 1;
+	if(!positive && !a.positive) check = -1;
+
+	if(number.size() < a.number.size()) return -1 * check;
 	if(number.size() > a.number.size()) return check;
-	for(unsigned int i(0); i < number.size(); i++) {
-		if(number[i] < a.number[i]) return check;
-		if(number[i] < a.number[i]) return !check;
+	for(unsigned int i(number.size()-1); i >= 0; --i) {
+		if(number[i] < a.number[i]) return -1 * check;
+		if(number[i] > a.number[i]) return check;
 	}
-	return false; // ==
+	return 0; // ==
 }
-bool bigint::operator>=(bigint const &a) const {
-	if(positive && !a.positive) return true;
-	if(!positive && a.positive) return false;
-	bool check = false;
-	if(!positive && !a.positive) check = true;
-	if(number.size() < a.number.size()) return check;
-	if(number.size() > a.number.size()) return check;
-	for(unsigned int i(0); i < number.size(); i++) {
-		if(number[i] < a.number[i]) return check;
-		if(number[i] < a.number[i]) return !check;
-	}
-	return false; // ==
+bool bigint::operator<(bigint const &b) const {
+	if(compare(b) == -1) return true;
+	return false;
 }
-bool bigint::operator==(bigint const &a) const {
-	if(positive != a.positive) return false;
-	if(number.size() != a.number.size()) return false;
-	for(unsigned int i(0); i < number.size(); i++) {
-		if(number[i] != a.number[i]) return false;
-	}
-	return true;
+bool bigint::operator<=(bigint const &b) const {
+	int compared = compare(b);
+	if(compared == 0 || compared == -1) return true;
+	return false;
+}
+bool bigint::operator>(bigint const &b) const {
+	if(compare(b) == 1) return true;
+	return false;
+}
+bool bigint::operator>=(bigint const &b) const {
+	int compared = compare(b);
+	if(compared == 0 || compared == 1) return true;
+	return false;
+}
+bool bigint::operator==(bigint const &b) const {
+	if(compare(b) == 0) return true;
+	return false;
 }
 
 //Allocation
@@ -249,19 +225,19 @@ bigint bigint::operator=(const long long &a) {
 }
 
 //Access
-int bigint::operator[](int const &b) {
+int bigint::operator[](int const &b)  {
 	return to_string()[b]-'0';
 }
 
 //Trivia
-int bigint::digits() {
+int bigint::digits() const {
 	int segments = number.size();
 	if(segments == 0) return 0;
 	int digits = 9*(segments-1);
 	digits += segment_length(number.back());
 	return digits;
 }
-int bigint::trailing_zeros() {
+int bigint::trailing_zeros() const {
 	if(number.empty() || (number.size() == 1 && number[0] == 0)) return 1;
 	int zeros = 0;
 	std::vector<int>::const_iterator it = number.begin();
@@ -285,17 +261,8 @@ void bigint::clear() {
 	skip = 0;
 }
 std::string bigint::to_string() {
-	std::stringstream stream;
-	while(number.size() && number.back() == 0) number.pop_back();
-	if(!number.size()) return "0";
-	if(!positive) stream << '-';
-	std::vector<int>::const_reverse_iterator it = number.rbegin();
-	stream << *it;
-	if(it != number.rend()) ++it;
-	for(;it != number.rend(); ++it) {
-		for(int i(0), len = segment_length(*it); i < 9-len; ++i) stream << '0';
-		if(*it) stream << *it;
-	}
+	std::ostringstream stream;
+	stream << *this;
 	return stream.str();
 }
 bigint& bigint::abs() {
@@ -305,7 +272,16 @@ bigint& bigint::abs() {
 
 //Input&Output
 std::ostream &operator<<(std::ostream &out, bigint a) {
-	out << a.to_string();
+	while(a.number.size() && a.number.back() == 0) a.number.pop_back();
+	if(!a.number.size()) return out << 0;
+	if(!a.positive) out << '-';
+	std::vector<int>::const_reverse_iterator it = a.number.rbegin();
+	out << *it;
+	if(it != a.number.rend()) ++it;
+	for(;it != a.number.rend(); ++it) {
+		for(int i(0), len = a.segment_length(*it); i < 9-len; ++i) out << '0';
+		if(*it) out << *it;
+	}
 	return out;
 }
 std::istream &operator>>(std::istream &in, bigint &a) {
@@ -331,7 +307,7 @@ std::istream &operator>>(std::istream &in, bigint &a) {
 	}
 	return in;
 }
-int bigint::segment_length(int segment) {
+int bigint::segment_length(int segment) const {
 	int length = 0;
 	while(segment) {
 		segment /= 10;
@@ -339,4 +315,3 @@ int bigint::segment_length(int segment) {
 	}
 	return length;
 }
-

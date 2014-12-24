@@ -9,11 +9,11 @@
   * [Streaming operators](#streaming-operators)
 * [Methods](#methods)
   * [clear](#clear)
-  * [toString](#toString)
+  * [to_string](#toString)
   * [abs](#abs)
   * [pow](#pown)
   * [digits](#digits)
-  * [trailingZeros](#trailingZeros)
+  * [trailing_zeros](#trailingZeros)
 
 #Description
 Bigint class provides math operations for arbitrarily large numbers. You know the limit is reached when your computer freezes.
@@ -52,8 +52,10 @@ bigint a,b;
 a = 159753;
 b = 1634687496;
 if(a == b) cout << "A is the same as B";
-else if(a < b) cout << "A is smaller than B";
-else cout << "A is larger than B;
+if(a < b) cout << "A is less than B";
+if(a > b) cout << "A is larger than B";
+if(a >= b) cout << "A is larger than B or equal to it";
+if(a <= b) cout << "A is smaller than B or equal to it";
 ```
 ##Access
 ```C++
@@ -78,13 +80,13 @@ cout << a.pow(486);;  //1459889316343...
 a.clear();
 cout << a; //0
 ```
-##toString()
+##to_string()
 Convers bigint to a string.
 ```C++
 string str;
 bigint a;
 a = 4558;
-str = a.pow(486).toString();
+str = a.pow(486).to_string();
 ```
 ##abs()
 Absolute value.
@@ -108,11 +110,11 @@ a = 4558;
 a.pow(486);
 cout << a.digits(); //1779
 ```
-##trailingZeros()
+##trailing_zeros()
 Returns the number of trailing zeros.
 ```C++
 bigint a;
 a = 4558;
 a.pow(486);
-cout << a.trailingZeros(); //972
+cout << a.trailing_zeros(); //972
 ```

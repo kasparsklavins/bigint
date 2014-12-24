@@ -16,13 +16,13 @@ public:
 	bigint();
 
 	//Adding
-	bigint operator+(bigint const &b);
+	bigint operator+(bigint const &b) const;
 	bigint& operator+=(bigint const &b);
-	bigint operator+(long long const &b);
+	bigint operator+(long long const &b) const;
 	bigint& operator+=(long long b);
 
 	//Subtraction
-	bigint operator-(bigint const &b);
+	bigint operator-(bigint const &b) const;
 	bigint& operator-=(bigint const &b);
 
 	//Multiplication
@@ -60,10 +60,11 @@ public:
 	bigint& pow(int const &power);
 
     //Trivia
-	int digits();
-	int trailing_zeros();
+	int digits() const;
+	int trailing_zeros() const;
 private:
-	int segment_length(int segment);
+	int segment_length(int segment) const;
 	bigint pow(int const &power, std::map<int, bigint> &lookup);
+	int compare(bigint const &b) const; //0 a == b, -1 a < b, 1 a > b
 };
 #endif
