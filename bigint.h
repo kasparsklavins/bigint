@@ -7,9 +7,9 @@
 class bigint {
 private:
 	std::vector<int> number;
-    bool positive;
-    int base;
-    unsigned int skip;
+	bool positive;
+	int base;
+	unsigned int skip;
 
 public:
 	//Magic methods
@@ -48,18 +48,18 @@ public:
 	int operator[](int const &b);
 
 	//Input&Output
-    friend std::istream &operator>>(std::istream &in, bigint &a);
-    friend std::ostream &operator<<(std::ostream &out, bigint a);
+	friend std::istream &operator>>(std::istream &in, bigint &a);
+	friend std::ostream &operator<<(std::ostream &out, bigint a);
 
-    //Helpers
-    void clear();
-    std::string to_string();
-    bigint& abs();
+	//Helpers
+	void clear();
+	std::string to_string();
+	bigint& abs();
 
 	//Power
 	bigint& pow(int const &power);
 
-    //Trivia
+	//Trivia
 	int digits() const;
 	int trailing_zeros() const;
 private:

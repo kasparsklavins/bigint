@@ -6,8 +6,8 @@
 //Constructor
 bigint::bigint() {
 	positive = true;
-    base = 1000000000;
-    skip = 0;
+	base = 1000000000;
+	skip = 0;
 //	number.reserve(1024);
 }
 //Adding
@@ -110,7 +110,7 @@ bigint bigint::operator*(bigint const &b) {
 	bigint c;
 	for(it1 = number.begin(); it1 != number.end(); ++it1) {
 		for(it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
-			c.skip = it1-number.begin() + it2-b.number.begin();
+			c.skip = (int)(it1 - number.begin()) + (int)(it2 - b.number.begin());
 			c += (long long)(*it1)*(*it2);
 		}
 	}
