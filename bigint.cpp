@@ -171,6 +171,9 @@ namespace Dodecahedron {
 	}
 	Bigint& Bigint::pow(int const &power) {
 		std::map<int, Bigint> lookup;
+		if(power % 2 == 0 && positive == false) {
+			positive = true;
+		}
 		*this = pow(power, lookup);
 		return *this;
 	}
@@ -315,5 +318,8 @@ namespace Dodecahedron {
 			length++;
 		}
 		return length;
+	}
+	Bigint abs(Bigint value) {
+		return value.abs();
 	}
 }

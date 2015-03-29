@@ -65,6 +65,7 @@ namespace Dodecahedron {
 		Bigint pow(int const &power, std::map<int, Bigint> &lookup);
 		int compare(Bigint const &b) const; //0 a == b, -1 a < b, 1 a > b
 	};
+	Bigint abs(Bigint value);
 }
 
 #endif

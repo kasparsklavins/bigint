@@ -21,7 +21,7 @@ Bigint class provides math operations for arbitrarily large numbers. You know th
 #Operators
 ##Addition
 ```C++
-Bigint a,b,c;
+Dodecahedron::Bigint a,b,c;
 c = a + b;
 c += a;
 c = a + 6;
@@ -29,13 +29,13 @@ c += 6;
 ```
 ##Subtraction
 ```C++
-Bigint a,b,c;
+Dodecahedron::Bigint a,b,c;
 c = a - b;
 c -= a;
 ```
 ##Multiplication
 ```C++
-Bigint a,b,c;
+Dodecahedron::Bigint a,b,c;
 c = a * b;
 c *= a;
 c = a * 6;
@@ -43,8 +43,8 @@ c *= 6;
 ```
 ##Allocation
 ```C++
-Bigint a = 12345;
-Bigint b;
+Dodecahedron::Bigint a = 12345;
+Dodecahedron::Bigint b;
 b = 159753;
 ```
 ##Comparison
