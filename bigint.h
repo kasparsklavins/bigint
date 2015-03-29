@@ -52,7 +52,6 @@ namespace Dodecahedron {
 
 		//Helpers
 		void clear();
-		std::string to_string();
 		Bigint& abs();
 
 		//Power
@@ -66,6 +65,8 @@ namespace Dodecahedron {
 		int compare(Bigint const &b) const; //0 a == b, -1 a < b, 1 a > b
 	};
 	Bigint abs(Bigint value);
+	std::string to_string(Bigint value);
+	Bigint factorial(int n);
 }
 
 #endif

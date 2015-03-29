@@ -230,7 +230,7 @@ namespace Dodecahedron {
 
 	//Access
 	int Bigint::operator[](int const &b)  {
-		return to_string()[b]-'0';
+		return to_string(*this)[b]-'0';
 	}
 
 	//Trivia
@@ -263,11 +263,6 @@ namespace Dodecahedron {
 		number.clear();
 		positive = true;
 		skip = 0;
-	}
-	std::string Bigint::to_string() {
-		std::ostringstream stream;
-		stream << *this;
-		return stream.str();
 	}
 	Bigint& Bigint::abs() {
 		positive = true;
@@ -321,5 +316,23 @@ namespace Dodecahedron {
 	}
 	Bigint abs(Bigint value) {
 		return value.abs();
+	}
+	std::string to_string(Bigint value) {
+		std::ostringstream stream;
+		stream << value;
+		return stream.str();
+	}
+	Bigint factorial(int n) {
+		Bigint result = 1;
+		if(n % 2) {
+			result = n;
+			n--;
+		}
+		int last = 0;
+		for(; n >= 2; n -= 2) {
+			result *= n+last;
+			last += n;
+		}
+		return result;
 	}
 }
