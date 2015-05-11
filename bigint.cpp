@@ -28,10 +28,35 @@ namespace Dodecahedron {
         }
     }
 
+    Bigint::Bigint(std::string stringInteger) {
+        int size = stringInteger.length();
+
+        positive = (stringInteger[0] != '-');
+
+        while (true) {
+            if (size <= 0) break;
+            if (!positive && size <= 1) break;
+
+            int length = 0;
+            int num = 0;
+            int prefix = 1;
+            for (int i(size - 1); i >= 0 && i >= size - 9; --i) {
+                if (stringInteger[i] < '0' || stringInteger[i] > '9') break;
+                num += (stringInteger[i] - '0') * prefix;
+                prefix *= 10;
+                ++length;
+            }
+            number.push_back(num);
+            size -= length;
+        }
+    }
+
     //Adding
     Bigint Bigint::operator+(Bigint const &b) const {
         Bigint c = *this;
-        return c += b;
+        c += b;
+
+        return c;
     }
 
     Bigint &Bigint::operator+=(Bigint const &b) {
@@ -61,6 +86,7 @@ namespace Dodecahedron {
             sum /= base;
         }
         if (sum) number.push_back(1);
+
         return *this;
     }
 
@@ -89,6 +115,7 @@ namespace Dodecahedron {
                 it = number.end() - 1;
             }
         }
+
         return *this;
     }
 
@@ -124,6 +151,7 @@ namespace Dodecahedron {
             }
         }
         if (dif < 0) positive = false;
+
         return *this;
     }
 
@@ -140,6 +168,7 @@ namespace Dodecahedron {
             }
         }
         c.skip = 0;
+
         return c;
     }
 
@@ -166,6 +195,7 @@ namespace Dodecahedron {
             ++it;
         }
         if (sum) number.push_back(sum);
+
         return *this;
     }
 
@@ -190,6 +220,7 @@ namespace Dodecahedron {
             positive = true;
         }
         *this = pow(power, lookup);
+
         return *this;
     }
 
@@ -207,6 +238,7 @@ namespace Dodecahedron {
             if (number[i] < a.number[i]) return -1 * check;
             if (number[i] > a.number[i]) return check;
         }
+
         return 0; // ==
     }
 
@@ -242,6 +274,7 @@ namespace Dodecahedron {
             number.push_back(t % base);
             t /= base;
         } while (t != 0);
+
         return *this;
     }
 
@@ -253,14 +286,18 @@ namespace Dodecahedron {
     //Trivia
     int Bigint::digits() const {
         int segments = number.size();
+
         if (segments == 0) return 0;
+
         int digits = 9 * (segments - 1);
         digits += segment_length(number.back());
+
         return digits;
     }
 
     int Bigint::trailing_zeros() const {
         if (number.empty() || (number.size() == 1 && number[0] == 0)) return 1;
+
         int zeros = 0;
         std::vector<int>::const_iterator it = number.begin();
         if (number.size() > 1) {
@@ -273,6 +310,7 @@ namespace Dodecahedron {
             ++zeros;
             a /= 10;
         }
+
         return zeros;
     }
 
@@ -285,45 +323,35 @@ namespace Dodecahedron {
 
     Bigint &Bigint::abs() {
         positive = true;
+
         return *this;
     }
 
     //Input&Output
     std::ostream &operator<<(std::ostream &out, Bigint a) {
         while (a.number.size() && a.number.back() == 0) a.number.pop_back();
+
         if (!a.number.size()) return out << 0;
         if (!a.positive) out << '-';
+
         std::vector<int>::const_reverse_iterator it = a.number.rbegin();
+
         out << *it;
         if (it != a.number.rend()) ++it;
         for (; it != a.number.rend(); ++it) {
             for (int i(0), len = a.segment_length(*it); i < 9 - len; ++i) out << '0';
             if (*it) out << *it;
         }
+
         return out;
     }
 
     std::istream &operator>>(std::istream &in, Bigint &a) {
         std::string str;
         in >> str;
-        int size = str.length();
-        if (str[0] == '-') a.positive = false;
-        while (true) {
-            if (size <= 0) break;
-            if (!a.positive && size <= 1) break;
 
-            int length = 0;
-            int num = 0;
-            int prefix = 1;
-            for (int i(size - 1); i >= 0 && i >= size - 9; --i) {
-                if (str[i] < '0' || str[i] > '9') break;
-                num += (str[i] - '0') * prefix;
-                prefix *= 10;
-                ++length;
-            }
-            a.number.push_back(num);
-            size -= length;
-        }
+        a = str;
+
         return in;
     }
 
@@ -333,6 +361,7 @@ namespace Dodecahedron {
             segment /= 10;
             ++length;
         }
+
         return length;
     }
 
@@ -343,6 +372,7 @@ namespace Dodecahedron {
     std::string to_string(Bigint value) {
         std::ostringstream stream;
         stream << value;
+
         return stream.str();
     }
 
@@ -357,6 +387,7 @@ namespace Dodecahedron {
             result *= n + last;
             last += n;
         }
+
         return result;
     }
 }

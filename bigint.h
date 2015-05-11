@@ -14,9 +14,10 @@ namespace Dodecahedron {
         unsigned int skip;
 
     public:
-        //Magic methods
+        //Constructors
         Bigint();
         Bigint(long long);
+        Bigint(std::string);
 
         //Adding
         Bigint operator+(Bigint const &) const;
