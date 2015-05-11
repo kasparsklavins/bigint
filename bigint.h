@@ -6,67 +6,70 @@
 #include <map>
 
 namespace Dodecahedron {
-	class Bigint {
-	private:
-		std::vector<int> number;
-		bool positive;
-		int base;
-		unsigned int skip;
+    class Bigint {
+    private:
+        std::vector<int> number;
+        bool positive;
+        int base;
+        unsigned int skip;
 
-	public:
-		//Magic methods
-		Bigint();
-		Bigint(long long);
+    public:
+        //Magic methods
+        Bigint();
+        Bigint(long long);
 
-		//Adding
-		Bigint operator+(Bigint const &b) const;
-		Bigint& operator+=(Bigint const &b);
-		Bigint operator+(long long const &b) const;
-		Bigint& operator+=(long long b);
+        //Adding
+        Bigint operator+(Bigint const &) const;
+        Bigint &operator+=(Bigint const &);
+        Bigint operator+(long long const &) const;
+        Bigint &operator+=(long long);
 
-		//Subtraction
-		Bigint operator-(Bigint const &b) const;
-		Bigint& operator-=(Bigint const &b);
+        //Subtraction
+        Bigint operator-(Bigint const &) const;
+        Bigint &operator-=(Bigint const &);
 
-		//Multiplication
-		Bigint operator*(Bigint const &b);
-		Bigint& operator*=(Bigint const &b);
-		Bigint operator*(long long const &b);
-		Bigint& operator*=(int const &b);
+        //Multiplication
+        Bigint operator*(Bigint const &);
+        Bigint &operator*=(Bigint const &);
+        Bigint operator*(long long const &);
+        Bigint &operator*=(int const &);
 
-		//Compare
-		bool operator<(const Bigint &a) const;
-		bool operator>(const Bigint &a) const;
-		bool operator<=(const Bigint &a) const;
-		bool operator>=(const Bigint &a) const;
-		bool operator==(const Bigint &a) const;
+        //Compare
+        bool operator<(const Bigint &) const;
+        bool operator>(const Bigint &) const;
+        bool operator<=(const Bigint &) const;
+        bool operator>=(const Bigint &) const;
+        bool operator==(const Bigint &) const;
 
-		//Allocation
-		Bigint operator=(const long long &a);
+        //Allocation
+        Bigint operator=(const long long &);
 
-		//Access
-		int operator[](int const &b);
-		//Input&Output
-		friend std::istream &operator>>(std::istream &in, Bigint &a);
-		friend std::ostream &operator<<(std::ostream &out, Bigint a);
+        //Access
+        int operator[](int const &);
 
-		//Helpers
-		void clear();
-		Bigint& abs();
+        //Input&Output
+        friend std::istream &operator>>(std::istream &, Bigint &);
+        friend std::ostream &operator<<(std::ostream &, Bigint);
 
-		//Power
-		Bigint& pow(int const &power);
-		//Trivia
-		int digits() const;
-		int trailing_zeros() const;
-	private:
-		int segment_length(int segment) const;
-		Bigint pow(int const &power, std::map<int, Bigint> &lookup);
-		int compare(Bigint const &b) const; //0 a == b, -1 a < b, 1 a > b
-	};
-	Bigint abs(Bigint value);
-	std::string to_string(Bigint value);
-	Bigint factorial(int n);
+        //Helpers
+        void clear();
+        Bigint &abs();
+
+        //Power
+        Bigint &pow(int const &);
+
+        //Trivia
+        int digits() const;
+        int trailing_zeros() const;
+    private:
+        int segment_length(int) const;
+        Bigint pow(int const &, std::map<int, Bigint> &);
+        int compare(Bigint const &) const; //0 a == b, -1 a < b, 1 a > b
+    };
+
+    Bigint abs(Bigint);
+    std::string to_string(Bigint);
+    Bigint factorial(int);
 }
 
 #endif
