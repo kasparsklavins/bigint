@@ -1,7 +1,7 @@
 #include <string>
 #include <sstream>
 #include <map>
-#include "Bigint.h"
+#include "bigint.h"
 
 namespace Dodecahedron {
 
@@ -23,7 +23,7 @@ namespace Dodecahedron {
         }
 
         while (value) {
-            number.push_back(value % base);
+            number.push_back((int)(value % base));
             value /= base;
         }
     }
@@ -163,7 +163,7 @@ namespace Dodecahedron {
         Bigint c;
         for (it1 = number.begin(); it1 != number.end(); ++it1) {
             for (it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
-                c.skip = (int) (it1 - number.begin()) + (int) (it2 - b.number.begin());
+                c.skip = (unsigned int) (it1 - number.begin()) + (it2 - b.number.begin());
                 c += (long long) (*it1) * (*it2);
             }
         }
@@ -190,11 +190,11 @@ namespace Dodecahedron {
         long long sum = 0;
         while (it != number.end()) {
             sum += (long long) (*it) * b;
-            *it = sum % base;
+            *it = (int)(sum % base);
             sum /= base;
             ++it;
         }
-        if (sum) number.push_back(sum);
+        if (sum) number.push_back((int)sum);
 
         return *this;
     }
@@ -271,7 +271,7 @@ namespace Dodecahedron {
         number.clear();
         long long t = a;
         do {
-            number.push_back(t % base);
+            number.push_back((int)(t % base));
             t /= base;
         } while (t != 0);
 
