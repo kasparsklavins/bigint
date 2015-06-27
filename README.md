@@ -1,4 +1,6 @@
-* [Description](#description)
+[![Build Status](https://travis-ci.org/kasparsklavins/bigint.svg)](https://travis-ci.org/kasparsklavins/bigint)
+
+* [Description](#description)   
 * [Operators](#operators)
   * [Addition](#addition)
   * [Subtraction](#subtraction)
