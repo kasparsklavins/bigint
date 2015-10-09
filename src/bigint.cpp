@@ -174,7 +174,7 @@ Bigint Bigint::operator*(Bigint const &b)
     Bigint c;
     for (it1 = number.begin(); it1 != number.end(); ++it1) {
         for (it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
-            c.skip = (unsigned int) (it1 - number.begin()) + (it2 - b.number.begin());
+            c.skip = (unsigned int) (it1 - number.begin()) + (it2 - b.number.begin()); //TODO
             c += (long long) (*it1) * (*it2);
         }
     }
@@ -251,7 +251,7 @@ int Bigint::compare(const Bigint &a) const //0 this == a || -1 this < a || 1 thi
 
     if (number.size() < a.number.size()) return -1 * check;
     if (number.size() > a.number.size()) return check;
-    for (size_t i(number.size() - 1); i >= 0; --i) {
+    for (size_t i(number.size() - 1); i >= 0; --i) { //TODO
         if (number[i] < a.number[i]) return -1 * check;
         if (number[i] > a.number[i]) return check;
     }
@@ -424,4 +424,5 @@ Bigint factorial(int n)
 
     return result;
 }
+
 }

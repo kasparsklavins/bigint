@@ -1,5 +1,5 @@
-#ifndef BIGINT_H_
-#define BIGINT_H_
+#ifndef DODECAHEDRON_BIGINT_H_
+#define DODECAHEDRON_BIGINT_H_
 
 #include <vector>
 #include <iostream>
