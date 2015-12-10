@@ -213,6 +213,51 @@ Bigint &Bigint::operator*=(int const &b)
     return *this;
 }
 
+//Division
+Bigint Bigint::operator/(Bigint const &b) {
+    if (b == Bigint(0))
+        throw std::runtime_error("Division by 0");
+    std::vector<int>::iterator it1;
+    std::vector<int>::const_iterator it2;
+    Bigint c;
+    for (it1 = number.begin(); it1 != number.end(); ++it1) {
+        for (it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
+            c.skip = (unsigned int) ((int) (it1 - number.begin()) + (int) (it2 - b.number.begin()));
+            c += (long long) (*it1) / (*it2);
+        }
+    }
+    c.skip = 0;
+
+    return c;
+}
+
+Bigint &Bigint::operator/=(Bigint const &b) {
+    *this = *this / b;
+
+    return *this;
+}
+
+Bigint Bigint::operator/(long long const &b) {
+    Bigint c = *this;
+    c /= b;
+
+    return c;
+}
+
+Bigint &Bigint::operator/=(int const &b) {
+    std::vector<int>::iterator it = number.begin();
+    long long sum = 0;
+    while (it != number.end()) {
+        sum += (long long) (*it) / b;
+        *it = (int) (sum % base);
+        sum /= base;
+        ++it;
+    }
+    if (sum) number.push_back((const int &) sum);
+
+    return *this;
+}
+
 //Power
 Bigint Bigint::pow(int const &power, std::map<int, Bigint> &lookup)
 {

@@ -5,6 +5,7 @@
   * [Addition](#addition)
   * [Subtraction](#subtraction)
   * [Multiplication](#multiplication)
+  * [Division](#division)
   * [Allocation](#allocation)
   * [Comparison](#comparison)
   * [Access](#access)
@@ -46,6 +47,14 @@ c *= a;
 c = a * 6;
 c *= 6;
 ```
+##Division
+```C++
+Dodecahedron::Bigint a,b,c;
+c = a / b;
+c /= a;
+c = a / 6;
+c /= 6;
+```
 ##Allocation
 ```C++
 Dodecahedron::Bigint a = 12345;
@@ -56,7 +65,7 @@ b = 159753;
 ```C++
 Dodecahedron::Bigint a = 159753;
 Dodecahedron::Bigint b = 1634687496;
-	
+
 if(a == b) cout << "A is the same as B";
 if(a < b) cout << "A is less than B";
 if(a > b) cout << "A is larger than B";
