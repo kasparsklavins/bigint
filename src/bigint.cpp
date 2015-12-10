@@ -1,6 +1,7 @@
 #include <string>
 #include <sstream>
 #include <map>
+#include <stdexcept>
 #include "bigint.h"
 
 namespace Dodecahedron
