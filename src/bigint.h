@@ -37,12 +37,6 @@ public:
     Bigint operator*(long long const &);
     Bigint &operator*=(int const &);
 
-    //Division
-    Bigint operator/(Bigint const &);
-    Bigint &operator/=(Bigint const &);
-    Bigint operator/(long long const &);
-    Bigint &operator/=(int const &);
-
     //Compare
     bool operator<(const Bigint &) const;
     bool operator>(const Bigint &) const;
