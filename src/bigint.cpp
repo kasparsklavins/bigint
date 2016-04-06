@@ -35,6 +35,8 @@ Bigint::Bigint(std::string stringInteger)
 {
     int size = stringInteger.length();
 
+    base = 1000000000;
+    skip = 0;
     positive = (stringInteger[0] != '-');
 
     while (true) {
