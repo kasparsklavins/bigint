@@ -253,6 +253,7 @@ int Bigint::compare(const Bigint &a) const //0 this == a || -1 this < a || 1 thi
 
     if (number.size() < a.number.size()) return -1 * check;
     if (number.size() > a.number.size()) return check;
+    if (number.size() == 0) return 0; // this == a == 0
     for (size_t i(number.size() - 1); i >= 0; --i) { //TODO
         if (number[i] < a.number[i]) return -1 * check;
         if (number[i] > a.number[i]) return check;
