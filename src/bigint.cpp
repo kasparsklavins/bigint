@@ -84,6 +84,7 @@ Bigint &Bigint::operator+=(Bigint const &b)
             sum += *it1;
         } else {
             number.push_back(0);
+            it1 = number.end()-1;
         }
         if (it2 != b.number.end()) {
             sum += *it2;
