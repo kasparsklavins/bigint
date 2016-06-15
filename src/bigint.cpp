@@ -13,7 +13,11 @@ Bigint::Bigint()
     base = 1000000000;
     skip = 0;
 }
-
+Bigint::Bigint(const Bigint &b)
+        : number(b.number),
+          positive(b.positive),
+          base(b.base),
+          skip(b.skip) { }
 Bigint::Bigint(long long value)
 {
     base = 1000000000;

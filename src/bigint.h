@@ -20,6 +20,7 @@ public:
     Bigint();
     Bigint(long long);
     Bigint(std::string);
+    Bigint(const Bigint& b);
 
     //Adding
     Bigint operator+(Bigint const &) const;
