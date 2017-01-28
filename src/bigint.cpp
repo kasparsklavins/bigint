@@ -160,7 +160,7 @@ Bigint &Bigint::operator-=(Bigint const &b)
             ++it2;
         }
         if (dif < 0) {
-            *(it1 - 1) = (dif * (-1)) % base;
+            *(it1 - 1) = dif + base;
             dif = -1;
         } else {
             *(it1 - 1) = dif % base;
@@ -168,6 +168,16 @@ Bigint &Bigint::operator-=(Bigint const &b)
         }
     }
     if (dif < 0) positive = false;
+
+	if (number.size() > 1)
+	{
+		do
+		{
+			it1 = number.end() - 1;
+			if (*it1 == 0) number.pop_back();
+			else break;
+		} while (number.size() > 1);
+	}
 
     return *this;
 }
