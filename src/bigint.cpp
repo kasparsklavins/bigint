@@ -166,15 +166,15 @@ Bigint &Bigint::operator-=(Bigint const &b)
     }
     if (dif < 0) positive = false;
 
-	if (number.size() > 1)
-	{
-		do
-		{
-			it1 = number.end() - 1;
-			if (*it1 == 0) number.pop_back();
-			else break;
-		} while (number.size() > 1);
-	}
+    if (number.size() > 1)
+    {
+        do
+        {
+            it1 = number.end() - 1;
+            if (*it1 == 0) number.pop_back();
+            else break;
+        } while (number.size() > 1);
+    }
 
     return *this;
 }
@@ -304,7 +304,7 @@ bool Bigint::operator==(Bigint const &b) const
 
 bool Bigint::operator!=(Bigint const &b) const
 {
-	return ! (*this == b);
+    return ! (*this == b);
 }
 
 //Allocation
