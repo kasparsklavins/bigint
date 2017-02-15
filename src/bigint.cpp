@@ -375,17 +375,18 @@ Bigint &Bigint::abs()
 }
 
 //Input&Output
-std::ostream &operator<<(std::ostream &out, Bigint a)
+std::ostream &operator<<(std::ostream &out, Bigint const &a)
 {
-    while (a.number.size() && a.number.back() == 0) a.number.pop_back();
-
     if (!a.number.size()) return out << 0;
+    int i = a.number.size() - 1;
+    for (; i>=0 && a.number[i] == 0; --i);
+
+    if (i == -1) return out << 0;
     if (!a.positive) out << '-';
 
-    std::vector<int>::const_reverse_iterator it = a.number.rbegin();
+    std::vector<int>::const_reverse_iterator it = a.number.rbegin() + (a.number.size() - i - 1);
 
-    out << *it;
-    if (it != a.number.rend()) ++it;
+    out << *it++;
     for (; it != a.number.rend(); ++it) {
         for (int i(0), len = a.segment_length(*it); i < 9 - len; ++i) out << '0';
         if (*it) out << *it;

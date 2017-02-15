@@ -54,7 +54,7 @@ public:
 
     //Input&Output
     friend std::istream &operator>>(std::istream &, Bigint &);
-    friend std::ostream &operator<<(std::ostream &, Bigint);
+    friend std::ostream &operator<<(std::ostream &, Bigint const &);
 
     //Helpers
     void clear();
