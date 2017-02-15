@@ -73,7 +73,7 @@ private:
 };
 
 Bigint abs(Bigint);
-std::string to_string(Bigint);
+std::string to_string(Bigint const &);
 Bigint factorial(int);
 }
 

@@ -421,7 +421,7 @@ Bigint abs(Bigint value)
     return value.abs();
 }
 
-std::string to_string(Bigint value)
+std::string to_string(Bigint const &value)
 {
     std::ostringstream stream;
     stream << value;
