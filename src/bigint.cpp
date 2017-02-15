@@ -75,9 +75,6 @@ Bigint &Bigint::operator+=(Bigint const &b)
     if (!b.positive) {
         return *this -= b;
     }
-    if (!b.positive && positive) {
-        positive = false;
-    }
     std::vector<int>::iterator
         it1 = number.begin();
     std::vector<int>::const_iterator
