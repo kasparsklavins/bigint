@@ -44,6 +44,7 @@ public:
     bool operator<=(const Bigint &) const;
     bool operator>=(const Bigint &) const;
     bool operator==(const Bigint &) const;
+    bool operator!=(const Bigint &) const;
 
     //Allocation
     Bigint operator=(const long long &);

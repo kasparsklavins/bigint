@@ -302,6 +302,11 @@ bool Bigint::operator==(Bigint const &b) const
     return compare(b) == 0;
 }
 
+bool Bigint::operator!=(Bigint const &b) const
+{
+	return ! (*this == b);
+}
+
 //Allocation
 Bigint Bigint::operator=(const long long &a)
 {
