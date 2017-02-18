@@ -14,6 +14,7 @@ private:
     bool positive;
     int base;
     unsigned int skip;
+    static const int default_base=1000000000;
 
 public:
     //Constructors

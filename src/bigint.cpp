@@ -10,7 +10,7 @@ namespace Dodecahedron
 Bigint::Bigint()
 {
     positive = true;
-    base = 1000000000;
+    base = Bigint::default_base;
     skip = 0;
 }
 Bigint::Bigint(const Bigint &b)
@@ -20,7 +20,7 @@ Bigint::Bigint(const Bigint &b)
           skip(b.skip) { }
 Bigint::Bigint(long long value)
 {
-    base = 1000000000;
+    base = Bigint::default_base;
     skip = 0;
     if (value < 0) {
         positive = false;
@@ -39,7 +39,7 @@ Bigint::Bigint(std::string stringInteger)
 {
     int size = stringInteger.length();
 
-    base = 1000000000;
+    base = Bigint::default_base;
     skip = 0;
     positive = (stringInteger[0] != '-');
 
