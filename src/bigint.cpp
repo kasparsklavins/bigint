@@ -118,7 +118,9 @@ Bigint &Bigint::operator+=(long long b)
         number.insert(number.end(), skip - number.size(), 0);
     }
     it += skip;
-    while (b) {
+    bool initial_flag=true;
+    while (b || initial_flag) {
+        initial_flag=false;
         if (it != number.end()) {
             *it += b % base;
             b /= base;
