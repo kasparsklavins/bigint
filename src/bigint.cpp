@@ -1,3 +1,4 @@
+
 #include <string>
 #include <sstream>
 #include <map>
@@ -245,7 +246,7 @@ int Bigint::operator%(int divisor)
     if(positive)
         return remains;
     else
-        return -remains + divisor;
+        return -remains;
 }
 
 //Power
