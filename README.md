@@ -5,6 +5,7 @@
   * [Addition](#addition)
   * [Subtraction](#subtraction)
   * [Multiplication](#multiplication)
+  * [Modulo](#modulo)
   * [Allocation](#allocation)
   * [Comparison](#comparison)
   * [Access](#access)
@@ -45,6 +46,12 @@ c = a * b;
 c *= a;
 c = a * 6;
 c *= 6;
+```
+##Modulo
+```C++
+Dodecahedron::Bigint a;
+int b;
+b = a % 31415
 ```
 ##Allocation
 ```C++
