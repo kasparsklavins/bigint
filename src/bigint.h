@@ -38,6 +38,9 @@ public:
     Bigint operator*(long long const &);
     Bigint &operator*=(int const &);
 
+    //Division
+    std::vector<Bigint> operator/(Bigint q); // returns quotient(index[0]) and remainder(index[1])
+
     //Compare
     bool operator<(const Bigint &) const;
     bool operator>(const Bigint &) const;
@@ -69,6 +72,7 @@ private:
     int segment_length(int) const;
     Bigint pow(int const &, std::map<int, Bigint> &);
     int compare(Bigint const &) const; //0 a == b, -1 a < b, 1 a > b
+    Bigint sub_number(Bigint &p, Bigint &q); // used in the division function
 };
 
 Bigint abs(Bigint);

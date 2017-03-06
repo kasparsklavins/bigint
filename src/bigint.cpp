@@ -2,6 +2,7 @@
 #include <sstream>
 #include <map>
 #include "bigint.h"
+#include <cmath>
 
 namespace Dodecahedron
 {
@@ -119,7 +120,7 @@ Bigint &Bigint::operator+=(long long b)
     }
     it += skip;
     bool initial_flag=true;
-    while (b || initial_flag) {
+    while (b  || initial_flag) {
         initial_flag=false;
         if (it != number.end()) {
             *it += b % base;
@@ -190,7 +191,7 @@ Bigint Bigint::operator*(Bigint const &b)
     if (b.number.size() == 1) return *this *= b.number[0];
     std::vector<int>::iterator it1;
     std::vector<int>::const_iterator it2;
-    Bigint c;
+    Bigint c("0");
     for (it1 = number.begin(); it1 != number.end(); ++it1) {
         for (it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
             c.skip = (unsigned int) (it1 - number.begin()) + (it2 - b.number.begin()); //TODO
@@ -232,7 +233,133 @@ Bigint &Bigint::operator*=(int const &b)
     return *this;
 }
 
+Bigint Bigint::sub_number(Bigint &p, Bigint &q){
+
+      std::string tmpx0, tmpx1, tmpx3;
+      long window_size = q.digits();
+      int last_i_iterator;
+      std::vector<int>::iterator i=p.number.end()-1;
+
+      if(window_size>p.digits())
+          window_size=p.digits();
+
+
+      while(i>=p.number.begin() && window_size>0){
+
+          tmpx0 = to_string(*i);
+          int ssss = tmpx0.size();
+          if(i!=p.number.end()-1 && ssss<9){
+              tmpx0 = std::string(9-ssss,'0') + tmpx0;
+          }
+
+          if(window_size - ssss < 0){
+              tmpx3=tmpx0;
+              tmpx0="";
+              for(int i=0;i<window_size;i++){
+                  tmpx0=tmpx0+tmpx3[i];
+                  last_i_iterator=i;
+              }
+              window_size = window_size - tmpx0.size();
+              tmpx1 = tmpx1 + tmpx0;
+          }
+          else{
+              window_size = window_size - tmpx0.size();
+              tmpx1 = tmpx1 + tmpx0;
+              i--;
+          }
+      }
+
+      Bigint c(tmpx1);
+
+      if(c<q && i>=p.number.begin()){
+          if(tmpx3.size()!=0){
+              window_size++;
+              tmpx0 = tmpx3[last_i_iterator+1];
+              tmpx1 = tmpx1 + tmpx0;
+              c=tmpx1;
+          }
+          else{
+              window_size++;
+              tmpx0 = to_string(*i);
+              if(i!=p.number.end()-1 && tmpx0.size()<9){
+                  tmpx0 = std::string(9-tmpx0.size(),'0') + tmpx0;
+              }
+              tmpx0 = tmpx0[0];
+              tmpx1 = tmpx1 + tmpx0;
+              c=tmpx1;
+          }
+
+      }
+
+      return c;
+}
+//Division
+std::vector<Bigint> Bigint::operator/(Bigint q){
+
+    /*Algorithm used is "Double division algorithm"*/
+
+    Bigint p = *this;
+    std::vector<Bigint> answer;
+    int look_up_table_size=4;
+    std::vector<Bigint> look_up(look_up_table_size);
+    bool done_flag=false ;
+    Bigint tmp_quotient, sum_quotient, tmpx1, tmpx2;
+
+    look_up[0]=q;
+    look_up[1]=q*2;
+    look_up[2]=q*4;
+    look_up[3]=q*8;
+
+    while(true){
+
+       Bigint sub_p=sub_number(p, q);  // cut a portion from the dividened equal in size with the divisor
+
+        for(int i=0;i<look_up_table_size;i++){ // looking in the look_up table
+
+            if(sub_p<look_up[i] && i!=0){
+                tmpx1=look_up[i-1];
+                tmp_quotient = std::pow(2,i-1);
+                break;
+            }
+            else if(sub_p<look_up[i] && i==0){
+
+                if(q.digits()>=p.digits()){
+                    done_flag=true;
+                    break;
+                }
+            }
+            else if(sub_p==look_up[i] || (sub_p>look_up[i] && i==look_up_table_size-1)){
+                 tmpx1=look_up[i];
+                 tmp_quotient= std::pow(2,i);
+                break;
+            }
+        }
+
+        if(done_flag){
+            answer.push_back(sum_quotient);
+            answer.push_back(sub_p);
+            break;
+        }
+
+        std::string temppp(p.digits()-(sub_p.digits()),'0');
+        temppp="1"+temppp;
+        tmpx2=temppp;
+
+        if(sum_quotient.digits()==0)
+            sum_quotient=tmp_quotient*tmpx2;
+        else
+            sum_quotient=sum_quotient+(tmp_quotient*tmpx2);
+
+        tmpx1=tmpx1*tmpx2;
+        p=p-tmpx1;
+
+    }
+    return answer;
+
+}
+
 //Power
+
 Bigint Bigint::pow(int const &power, std::map<int, Bigint> &lookup)
 {
     if (power == 1) return *this;
@@ -393,6 +520,7 @@ std::ostream &operator<<(std::ostream &out, Bigint a)
 
     return out;
 }
+
 
 std::istream &operator>>(std::istream &in, Bigint &a)
 {
