@@ -11,7 +11,7 @@ namespace Dodecahedron
 Bigint::Bigint()
 {
     positive = true;
-    base = 1000000000;
+    base = Bigint::default_base;
     skip = 0;
 }
 Bigint::Bigint(const Bigint &b)
@@ -21,7 +21,7 @@ Bigint::Bigint(const Bigint &b)
           skip(b.skip) { }
 Bigint::Bigint(long long value)
 {
-    base = 1000000000;
+    base = Bigint::default_base;
     skip = 0;
     if (value < 0) {
         positive = false;
@@ -40,7 +40,7 @@ Bigint::Bigint(std::string stringInteger)
 {
     int size = stringInteger.length();
 
-    base = 1000000000;
+    base = Bigint::default_base;
     skip = 0;
     positive = (stringInteger[0] != '-');
 
@@ -75,9 +75,6 @@ Bigint &Bigint::operator+=(Bigint const &b)
 {
     if (!b.positive) {
         return *this -= b;
-    }
-    if (!b.positive && positive) {
-        positive = false;
     }
     std::vector<int>::iterator
         it1 = number.begin();
@@ -119,7 +116,9 @@ Bigint &Bigint::operator+=(long long b)
         number.insert(number.end(), skip - number.size(), 0);
     }
     it += skip;
-    while (b) {
+    bool initial_flag=true;
+    while (b || initial_flag) {
+        initial_flag=false;
         if (it != number.end()) {
             *it += b % base;
             b /= base;
@@ -170,15 +169,15 @@ Bigint &Bigint::operator-=(Bigint const &b)
     }
     if (dif < 0) positive = false;
 
-	if (number.size() > 1)
-	{
-		do
-		{
-			it1 = number.end() - 1;
-			if (*it1 == 0) number.pop_back();
-			else break;
-		} while (number.size() > 1);
-	}
+    if (number.size() > 1)
+    {
+        do
+        {
+            it1 = number.end() - 1;
+            if (*it1 == 0) number.pop_back();
+            else break;
+        } while (number.size() > 1);
+    }
 
     return *this;
 }
@@ -324,6 +323,11 @@ bool Bigint::operator==(Bigint const &b) const
     return compare(b) == 0;
 }
 
+bool Bigint::operator!=(Bigint const &b) const
+{
+    return ! (*this == b);
+}
+
 //Allocation
 Bigint Bigint::operator=(const long long &a)
 {
@@ -392,17 +396,18 @@ Bigint &Bigint::abs()
 }
 
 //Input&Output
-std::ostream &operator<<(std::ostream &out, Bigint a)
+std::ostream &operator<<(std::ostream &out, Bigint const &a)
 {
-    while (a.number.size() && a.number.back() == 0) a.number.pop_back();
-
     if (!a.number.size()) return out << 0;
+    int i = a.number.size() - 1;
+    for (; i>=0 && a.number[i] == 0; --i);
+
+    if (i == -1) return out << 0;
     if (!a.positive) out << '-';
 
-    std::vector<int>::const_reverse_iterator it = a.number.rbegin();
+    std::vector<int>::const_reverse_iterator it = a.number.rbegin() + (a.number.size() - i - 1);
 
-    out << *it;
-    if (it != a.number.rend()) ++it;
+    out << *it++;
     for (; it != a.number.rend(); ++it) {
         for (int i(0), len = a.segment_length(*it); i < 9 - len; ++i) out << '0';
         if (*it) out << *it;
@@ -437,7 +442,7 @@ Bigint abs(Bigint value)
     return value.abs();
 }
 
-std::string to_string(Bigint value)
+std::string to_string(Bigint const &value)
 {
     std::ostringstream stream;
     stream << value;

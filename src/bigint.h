@@ -14,6 +14,7 @@ private:
     bool positive;
     int base;
     unsigned int skip;
+    static const int default_base=1000000000;
 
 public:
     //Constructors
@@ -47,6 +48,7 @@ public:
     bool operator<=(const Bigint &) const;
     bool operator>=(const Bigint &) const;
     bool operator==(const Bigint &) const;
+    bool operator!=(const Bigint &) const;
 
     //Allocation
     Bigint operator=(const long long &);
@@ -56,7 +58,7 @@ public:
 
     //Input&Output
     friend std::istream &operator>>(std::istream &, Bigint &);
-    friend std::ostream &operator<<(std::ostream &, Bigint);
+    friend std::ostream &operator<<(std::ostream &, Bigint const &);
 
     //Helpers
     void clear();
@@ -75,7 +77,7 @@ private:
 };
 
 Bigint abs(Bigint);
-std::string to_string(Bigint);
+std::string to_string(Bigint const &);
 Bigint factorial(int);
 }
 
