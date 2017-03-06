@@ -51,7 +51,7 @@ c *= 6;
 ```C++
 Dodecahedron::Bigint a;
 int b;
-b = a % 31415
+b = a % 31415;
 ```
 ##Allocation
 ```C++
