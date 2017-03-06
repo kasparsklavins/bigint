@@ -39,6 +39,9 @@ public:
     Bigint operator*(long long const &);
     Bigint &operator*=(int const &);
 
+    //Modulo
+    int operator%(int);
+
     //Compare
     bool operator<(const Bigint &) const;
     bool operator>(const Bigint &) const;

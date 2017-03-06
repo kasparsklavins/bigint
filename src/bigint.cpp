@@ -1,3 +1,4 @@
+
 #include <string>
 #include <sstream>
 #include <map>
@@ -227,6 +228,24 @@ Bigint &Bigint::operator*=(int const &b)
     if (sum) number.push_back((int) sum);
 
     return *this;
+}
+
+//Modulo
+int Bigint::operator%(int divisor)
+{
+    long int remains = 0;
+    for (int i = 0; i < number.size(); i++){
+        remains = (remains + number[number.size() - i - 1]) % divisor;
+        if(i != number.size() - 1)
+        {
+            remains = remains*base;
+            remains %= divisor;
+        }
+    }
+    if(positive)
+        return remains;
+    else
+        return -remains;
 }
 
 //Power
