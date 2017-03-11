@@ -3,6 +3,7 @@
 #include <map>
 #include "bigint.h"
 #include <cmath>
+#include <stdlib.h>
 
 namespace Dodecahedron
 {
@@ -233,6 +234,26 @@ Bigint &Bigint::operator*=(int const &b)
     return *this;
 }
 
+bool Bigint::is_even(){
+    if(number.size()==1){
+      int x = number[0];
+      if(x%2 == 0)
+        return true;
+      else
+          return false;
+    }
+
+    else if(number.size()>1){
+      int x = *(number.begin());
+      if(x%2 == 0)
+        return true;
+      else
+          return false;
+    }
+
+}
+
+
 Bigint Bigint::sub_number(Bigint &p, Bigint &q){
 
       std::string tmpx0, tmpx1, tmpx3;
@@ -305,10 +326,24 @@ std::vector<Bigint> Bigint::operator/(Bigint q){
     bool done_flag=false ;
     Bigint tmp_quotient, sum_quotient, tmpx1, tmpx2;
 
+    Bigint zero("0");
+    if(q==zero){
+        std::cout << "Error: Dividing by zero" << std::endl;
+        exit (EXIT_FAILURE);
+    }
+
+    bool this_sign = this -> positive;
+    bool q_sign = q.positive;
+
+    p.positive = true;
+    q.positive = true;
+
+
     look_up[0]=q;
     look_up[1]=q*2;
     look_up[2]=q*4;
     look_up[3]=q*8;
+
 
     while(true){
 
@@ -354,8 +389,26 @@ std::vector<Bigint> Bigint::operator/(Bigint q){
         p=p-tmpx1;
 
     }
-    return answer;
 
+    if(this_sign == false && q_sign == false){
+        answer[0].positive = true;
+    }
+
+    else if(this_sign == false || q_sign == false){
+        if( this -> is_even() && q.is_even())
+            answer[0].positive = false;
+        else{
+            answer[0] = answer[0] + Bigint("1");
+            answer[0].positive = false;
+        }
+    }
+
+    else{
+        answer[0].positive = true;
+    }
+
+    return answer;
+	
 }
 
 //Power
@@ -573,3 +626,4 @@ Bigint factorial(int n)
 }
 
 }
+

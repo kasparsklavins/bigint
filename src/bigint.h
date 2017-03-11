@@ -39,6 +39,7 @@ public:
     Bigint &operator*=(int const &);
 
     //Division
+    bool is_even();
     std::vector<Bigint> operator/(Bigint q); // returns quotient(index[0]) and remainder(index[1])
 
     //Compare
