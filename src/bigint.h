@@ -40,8 +40,10 @@ public:
 
     //Division
     bool is_even();
-    std::vector<Bigint> operator/(Bigint q); // returns quotient(index[0]) and remainder(index[1])
-
+    private:
+    std::vector<Bigint> divide(Bigint q);   // returns quotient(index[0]) and remainder(index[1]).
+    public:
+    std::vector<Bigint> operator/(Bigint q); // interface for divide() function.
     //Compare
     bool operator<(const Bigint &) const;
     bool operator>(const Bigint &) const;

@@ -4,6 +4,7 @@
 #include "bigint.h"
 #include <cmath>
 #include <stdlib.h>
+#include <exception>
 
 namespace Dodecahedron
 {
@@ -315,7 +316,8 @@ Bigint Bigint::sub_number(Bigint &p, Bigint &q){
       return c;
 }
 //Division
-std::vector<Bigint> Bigint::operator/(Bigint q){
+
+std::vector<Bigint> Bigint::divide(Bigint q){
 
     /*Algorithm used is "Double division algorithm"*/
 
@@ -327,9 +329,11 @@ std::vector<Bigint> Bigint::operator/(Bigint q){
     Bigint tmp_quotient, sum_quotient, tmpx1, tmpx2;
 
     Bigint zero("0");
-    if(q==zero){
-        std::cout << "Error: Dividing by zero" << std::endl;
-        exit (EXIT_FAILURE);
+
+    if(q==zero || q == 0){
+    //std::cout << "Error: Dividing by zero" << std::endl;
+    //exit (EXIT_FAILURE);
+    throw "Dividing by zero!";
     }
 
     bool this_sign = this -> positive;
@@ -408,8 +412,21 @@ std::vector<Bigint> Bigint::operator/(Bigint q){
     }
 
     return answer;
-	
+
 }
+
+std::vector<Bigint> Bigint::operator/(Bigint q){
+    try{
+        return divide(q);
+    }
+    catch(const char* msg){
+        std::cerr << msg << std::endl;
+        std::terminate();
+    }
+
+
+}
+
 
 //Power
 
@@ -626,4 +643,3 @@ Bigint factorial(int n)
 }
 
 }
-
