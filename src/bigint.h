@@ -11,7 +11,8 @@ class Bigint
 {
 private:
     std::vector<int> number;
-    bool positive;
+    // don't modify this directly through const. use flip_positive
+    mutable bool positive;
     int base;
     unsigned int skip;
     static const int default_base=1000000000;
@@ -71,6 +72,7 @@ private:
     int segment_length(int) const;
     Bigint pow(int const &, std::map<int, Bigint> &);
     int compare(Bigint const &) const; //0 a == b, -1 a < b, 1 a > b
+    void flip_positive() const;
 };
 
 Bigint abs(Bigint);
