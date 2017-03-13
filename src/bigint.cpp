@@ -397,12 +397,7 @@ std::vector<Bigint> Bigint::divide(Bigint q){
     }
 
     else if(this_sign == false || q_sign == false){
-        if( this -> is_even() && q.is_even())
-            answer[0].positive = false;
-        else{
-            answer[0] = answer[0] + Bigint("1");
-            answer[0].positive = false;
-        }
+        answer[0].positive = false;
     }
 
     else{
