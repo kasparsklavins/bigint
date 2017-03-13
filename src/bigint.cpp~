@@ -331,7 +331,7 @@ std::vector<Bigint> Bigint::divide(Bigint q){
     Bigint zero("0");
 
     if(q==zero || q == 0){
-    	throw "Dividing by zero!";
+    throw "Dividing by zero!";
     }
 
     bool this_sign = this -> positive;
