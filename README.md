@@ -5,6 +5,7 @@
   * [Addition](#addition)
   * [Subtraction](#subtraction)
   * [Multiplication](#multiplication)
+  * [Division](#division)
   * [Allocation](#allocation)
   * [Comparison](#comparison)
   * [Access](#access)
@@ -45,6 +46,17 @@ c = a * b;
 c *= a;
 c = a * 6;
 c *= 6;
+```
+##Division
+```C++
+Dodecahedron::Bigint a,b;
+std::vector<Bigint> c;
+Dodecahedron::Bigint quotient, remainder ;
+
+c = a / b;
+
+quotient = c[0];
+remainder = c[1];
 ```
 ##Allocation
 ```C++
