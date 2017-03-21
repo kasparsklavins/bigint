@@ -182,12 +182,19 @@ Bigint &Bigint::operator-=(Bigint const &b)
 }
 
 //Multiplication
+//Multiplication
 Bigint Bigint::operator*(Bigint const &b)
 {
+    if (b.number.size() == 1) { //sign handler
+        if(b.positive)
+            return *this *= b.number[0];
+        else
+            return *this *= b.number[0] * -1;
+    }
     if (b.number.size() == 1) return *this *= b.number[0];
     std::vector<int>::iterator it1;
     std::vector<int>::const_iterator it2;
-    Bigint c;
+    Bigint c("0");
     for (it1 = number.begin(); it1 != number.end(); ++it1) {
         for (it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
             c.skip = (unsigned int) (it1 - number.begin()) + (it2 - b.number.begin()); //TODO
@@ -195,8 +202,13 @@ Bigint Bigint::operator*(Bigint const &b)
         }
     }
     c.skip = 0;
-
-    return c;
+    if((positive == false && b.positive == false) || (positive == true && b.positive == true)){
+        return c;
+    }
+    else{
+        c.positive = false;
+        return c;
+    }
 }
 
 Bigint &Bigint::operator*=(Bigint const &b)
@@ -214,8 +226,22 @@ Bigint Bigint::operator*(long long const &b)
     return c;
 }
 
-Bigint &Bigint::operator*=(int const &b)
+Bigint &Bigint::operator*=(int const &b1)
 {
+    int b1_sign = 1 ;
+    int b = b1;
+
+    bool old_positive = positive;
+
+    positive = true;
+
+    if(b1<0){
+        b = b1 * -1;
+        b1_sign = -1;
+    }
+    else if(b1>=0){
+        b = b1;
+    }
     std::vector<int>::iterator it = number.begin();
     long long sum = 0;
     while (it != number.end()) {
@@ -225,8 +251,13 @@ Bigint &Bigint::operator*=(int const &b)
         ++it;
     }
     if (sum) number.push_back((int) sum);
-
-    return *this;
+    if((b1_sign == -1 && old_positive == false) ||  (b1_sign == 1 && old_positive == true)){
+       return *this;
+   }
+   else{
+       positive = false;
+       return *this;
+   }
 }
 
 //Power
