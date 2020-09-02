@@ -29,10 +29,10 @@ Bigint::Bigint(long long value)
         positive = true;
     }
 
-    while (value) {
+    do {
         number.push_back((int) (value % base));
         value /= base;
-    }
+    } while (value != 0);
 }
 
 Bigint::Bigint(std::string stringInteger)
