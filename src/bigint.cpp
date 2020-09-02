@@ -214,7 +214,7 @@ Bigint Bigint::operator*(long long const &b)
     return c;
 }
 
-Bigint &Bigint::operator*=(int const &b)
+Bigint &Bigint::operator*=(long long const &b)
 {
     std::vector<int>::iterator it = number.begin();
     long long sum = 0;
