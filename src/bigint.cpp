@@ -239,8 +239,12 @@ Bigint Bigint::pow(int const &power, std::map<int, Bigint> &lookup)
     while (closestPower < power) closestPower <<= 1;
     closestPower >>= 1;
 
-    if (power == closestPower) lookup[power] = pow(power / 2, lookup) * pow(power / 2, lookup);
-    else lookup[power] = pow(closestPower, lookup) * pow(power - closestPower, lookup);
+    if (power == closestPower) {
+        auto tmp = pow(power / 2, lookup);
+        lookup[power] = tmp * tmp;
+    } else {
+        lookup[power] = pow(closestPower, lookup) * pow(power - closestPower, lookup);
+    }
 
     return lookup[power];
 }
