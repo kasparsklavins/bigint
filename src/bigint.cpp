@@ -251,6 +251,7 @@ int Bigint::operator%(int divisor)
 //Power
 Bigint Bigint::pow(int const &power, std::map<int, Bigint> &lookup)
 {
+    if (power == 0) return Bigint { 1 };
     if (power == 1) return *this;
     if (lookup.count(power)) return lookup[power];
 
