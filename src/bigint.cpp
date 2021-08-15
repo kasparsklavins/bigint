@@ -1,3 +1,4 @@
+
 #include <string>
 #include <sstream>
 #include <map>
@@ -29,10 +30,10 @@ Bigint::Bigint(long long value)
         positive = true;
     }
 
-    while (value) {
+    do {
         number.push_back((int) (value % base));
         value /= base;
-    }
+    } while (value != 0);
 }
 
 Bigint::Bigint(std::string stringInteger)
@@ -72,8 +73,25 @@ Bigint Bigint::operator+(Bigint const &b) const
 
 Bigint &Bigint::operator+=(Bigint const &b)
 {
-    if (!b.positive) {
-        return *this -= b;
+    if (positive && !b.positive) {
+        b.flip_positive();
+        *this -= b;
+        b.flip_positive();
+        return *this;
+    }
+    if (!positive && b.positive) {
+        flip_positive();
+        *this -= b;
+        flip_positive();
+        return *this;
+    }
+    if (!positive && !b.positive) {
+        flip_positive();
+        b.flip_positive();
+        *this += b;
+        flip_positive();
+        b.flip_positive();
+        return *this;
     }
     std::vector<int>::iterator
         it1 = number.begin();
@@ -144,6 +162,12 @@ Bigint Bigint::operator-(Bigint const &b) const
 
 Bigint &Bigint::operator-=(Bigint const &b)
 {
+    if (!positive || !b.positive){
+        b.flip_positive();
+        *this += b;
+        b.flip_positive();
+        return *this;
+    }
     std::vector<int>::iterator
         it1 = number.begin();
     std::vector<int>::const_iterator
@@ -153,30 +177,33 @@ Bigint &Bigint::operator-=(Bigint const &b)
         if (it1 != number.end()) {
             dif += *it1;
             ++it1;
+        } else {
+            number.push_back(0);
+            it1 = number.end();
         }
         if (it2 != b.number.end()) {
             dif -= *it2;
             ++it2;
         }
         if (dif < 0) {
-            *(it1 - 1) = dif + base;
+            *(it1 - 1) = (dif + base) % base;
             dif = -1;
         } else {
             *(it1 - 1) = dif % base;
             dif /= base;
         }
     }
-    if (dif < 0) positive = false;
-
-    if (number.size() > 1)
-    {
-        do
-        {
-            it1 = number.end() - 1;
-            if (*it1 == 0) number.pop_back();
-            else break;
-        } while (number.size() > 1);
+    if (dif < 0) {
+        std::string newstr("1");
+        int c_seg = number.size();
+        while(c_seg--)
+            for(int i=1; i<base; i*=10)
+                newstr += "0";
+        *this = Bigint(newstr) - *this;
+        positive = false;
     }
+    //while (!number.back())
+    //    number.pop_back();
 
     return *this;
 }
@@ -184,10 +211,16 @@ Bigint &Bigint::operator-=(Bigint const &b)
 //Multiplication
 Bigint Bigint::operator*(Bigint const &b)
 {
+    if (b.number.size() == 1) { //sign handler
+        if(b.positive)
+            return *this *= b.number[0];
+        else
+            return *this *= b.number[0] * -1;
+    }
     if (b.number.size() == 1) return *this *= b.number[0];
     std::vector<int>::iterator it1;
     std::vector<int>::const_iterator it2;
-    Bigint c;
+    Bigint c("0");
     for (it1 = number.begin(); it1 != number.end(); ++it1) {
         for (it2 = b.number.begin(); it2 != b.number.end(); ++it2) {
             c.skip = (unsigned int) (it1 - number.begin()) + (it2 - b.number.begin()); //TODO
@@ -196,7 +229,13 @@ Bigint Bigint::operator*(Bigint const &b)
     }
     c.skip = 0;
 
-    return c;
+    if((positive == false && b.positive == false) || (positive == true && b.positive == true)){
+        return c;
+    }
+    else{
+        c.positive = false;
+        return c;
+    }
 }
 
 Bigint &Bigint::operator*=(Bigint const &b)
@@ -214,8 +253,22 @@ Bigint Bigint::operator*(long long const &b)
     return c;
 }
 
-Bigint &Bigint::operator*=(int const &b)
+Bigint &Bigint::operator*=(long long const &b1)
 {
+    int b1_sign = 1 ;
+    int b = b1;
+
+    bool old_positive = positive;
+
+    positive = true;
+
+    if(b1<0){
+        b = b1 * -1;
+        b1_sign = -1;
+    }
+    else if(b1>=0){
+        b = b1;
+    }
     std::vector<int>::iterator it = number.begin();
     long long sum = 0;
     while (it != number.end()) {
@@ -226,12 +279,77 @@ Bigint &Bigint::operator*=(int const &b)
     }
     if (sum) number.push_back((int) sum);
 
-    return *this;
+    if((b1_sign == -1 && old_positive == false) ||  (b1_sign == 1 && old_positive == true)){
+       return *this;
+    } else {
+       positive = false;
+       return *this;
+   }
+}
+
+//Division
+Bigint Bigint::operator/(Bigint const &b)
+{
+	if (b == 0) return *this;
+	else
+	{
+		Bigint c = *this;
+		c.abs();
+		if (c == 0) return 0;
+		Bigint a = b;
+		a.abs();
+		Bigint res = 0;
+		while (c >= a)
+		{
+			c -= a;
+			res += 1;
+		}
+		res.positive = !(!(this->positive) ^ !(b.positive));
+		return res;
+	}
+}
+
+
+//Modulo
+int Bigint::operator%(int divisor)
+{
+    long int remains = 0;
+    for (int i = 0; i < number.size(); i++){
+        remains = (remains + number[number.size() - i - 1]) % divisor;
+        if(i != number.size() - 1)
+        {
+            remains = remains*base;
+            remains %= divisor;
+        }
+    }
+    if(positive)
+        return remains;
+    else
+        return -remains;
+}
+
+Bigint Bigint::operator%(Bigint const &b)
+{
+	if (b == 0) return *this;
+	else
+	{
+		Bigint c = *this;
+		c.abs();
+		if (c == 0) return 0;
+		Bigint a = b;
+		a.abs();
+		while (c >= a)
+		{
+			c -= a;
+		}
+		return c;
+	}
 }
 
 //Power
 Bigint Bigint::pow(int const &power, std::map<int, Bigint> &lookup)
 {
+    if (power == 0) return Bigint { 1 };
     if (power == 1) return *this;
     if (lookup.count(power)) return lookup[power];
 
@@ -239,8 +357,12 @@ Bigint Bigint::pow(int const &power, std::map<int, Bigint> &lookup)
     while (closestPower < power) closestPower <<= 1;
     closestPower >>= 1;
 
-    if (power == closestPower) lookup[power] = pow(power / 2, lookup) * pow(power / 2, lookup);
-    else lookup[power] = pow(closestPower, lookup) * pow(power - closestPower, lookup);
+    if (power == closestPower) {
+        auto tmp = pow(power / 2, lookup);
+        lookup[power] = tmp * tmp;
+    } else {
+        lookup[power] = pow(closestPower, lookup) * pow(power - closestPower, lookup);
+    }
 
     return lookup[power];
 }
@@ -359,6 +481,12 @@ int Bigint::trailing_zeros() const
     }
 
     return zeros;
+}
+
+void Bigint::flip_positive() const
+{
+    // WARN: private use, must call as pair!!!
+    positive = !positive;
 }
 
 //Helpers
