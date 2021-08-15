@@ -202,8 +202,8 @@ Bigint &Bigint::operator-=(Bigint const &b)
         *this = Bigint(newstr) - *this;
         positive = false;
     }
-    while (!number.back())
-        number.pop_back();
+    //while (!number.back())
+    //    number.pop_back();
 
     return *this;
 }

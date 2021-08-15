@@ -14,4 +14,15 @@ namespace add{
         assert(bint == bint * 1);
         assert(bint == 55);
     };
+
+    inline void add_test_1()
+    {
+        Dodecahedron::Bigint bint1 = 30;
+        Dodecahedron::Bigint bint2 = 70;
+
+        assert(Dodecahedron::to_string(bint1) == "30");
+        assert(Dodecahedron::to_string(bint2) == "70");
+
+        assert(bint1 + bint2 == 100);
+    };
 }
