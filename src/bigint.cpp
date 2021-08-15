@@ -73,8 +73,25 @@ Bigint Bigint::operator+(Bigint const &b) const
 
 Bigint &Bigint::operator+=(Bigint const &b)
 {
-    if (!b.positive) {
-        return *this -= b;
+    if (positive && !b.positive) {
+        b.flip_positive();
+        *this -= b;
+        b.flip_positive();
+        return *this;
+    }
+    if (!positive && b.positive) {
+        flip_positive();
+        *this -= b;
+        flip_positive();
+        return *this;
+    }
+    if (!positive && !b.positive) {
+        flip_positive();
+        b.flip_positive();
+        *this += b;
+        flip_positive();
+        b.flip_positive();
+        return *this;
     }
     std::vector<int>::iterator
         it1 = number.begin();
@@ -145,6 +162,12 @@ Bigint Bigint::operator-(Bigint const &b) const
 
 Bigint &Bigint::operator-=(Bigint const &b)
 {
+    if (!positive || !b.positive){
+        b.flip_positive();
+        *this += b;
+        b.flip_positive();
+        return *this;
+    }
     std::vector<int>::iterator
         it1 = number.begin();
     std::vector<int>::const_iterator
@@ -154,30 +177,33 @@ Bigint &Bigint::operator-=(Bigint const &b)
         if (it1 != number.end()) {
             dif += *it1;
             ++it1;
+        } else {
+            number.push_back(0);
+            it1 = number.end();
         }
         if (it2 != b.number.end()) {
             dif -= *it2;
             ++it2;
         }
         if (dif < 0) {
-            *(it1 - 1) = dif + base;
+            *(it1 - 1) = (dif + base) % base;
             dif = -1;
         } else {
             *(it1 - 1) = dif % base;
             dif /= base;
         }
     }
-    if (dif < 0) positive = false;
-
-    if (number.size() > 1)
-    {
-        do
-        {
-            it1 = number.end() - 1;
-            if (*it1 == 0) number.pop_back();
-            else break;
-        } while (number.size() > 1);
+    if (dif < 0) {
+        std::string newstr("1");
+        int c_seg = number.size();
+        while(c_seg--)
+            for(int i=1; i<base; i*=10)
+                newstr += "0";
+        *this = Bigint(newstr) - *this;
+        positive = false;
     }
+    while (!number.back())
+        number.pop_back();
 
     return *this;
 }
@@ -410,6 +436,12 @@ int Bigint::trailing_zeros() const
     }
 
     return zeros;
+}
+
+void Bigint::flip_positive() const
+{
+    // WARN: private use, must call as pair!!!
+    positive = !positive;
 }
 
 //Helpers
