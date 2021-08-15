@@ -63,13 +63,14 @@ Dodecahedron::Bigint a;
 int b;
 b = a % 31415;
 ```
+
 ## Allocation
 ```C++
 Dodecahedron::Bigint a = 12345;
 Dodecahedron::Bigint b;
 b = 159753;
 ```
-##Comparison
+## Comparison
 ```C++
 Dodecahedron::Bigint a = 159753;
 Dodecahedron::Bigint b = 1634687496;
