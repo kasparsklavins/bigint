@@ -1,3 +1,5 @@
+project(Dodecahedron_Bigint CXX)
+
 cmake_minimum_required(VERSION 3.10)
 
 add_library(Dodecahedron_Bigint src/bigint.h src/bigint.cpp)
