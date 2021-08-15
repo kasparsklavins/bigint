@@ -253,7 +253,7 @@ Bigint Bigint::operator*(long long const &b)
     return c;
 }
 
-Bigint &Bigint::operator*=(int const &b1)
+Bigint &Bigint::operator*=(long long const &b1)
 {
     int b1_sign = 1 ;
     int b = b1;

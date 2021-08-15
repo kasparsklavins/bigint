@@ -39,13 +39,14 @@ public:
     Bigint operator*(Bigint const &);
     Bigint &operator*=(Bigint const &);
     Bigint operator*(long long const &);
-    Bigint &operator*=(int const &);
+    Bigint &operator*=(long long const &);
 
     //Modulo
+    Bigint operator%(Bigint const &);
     int operator%(int);
-    	//Division
+
+    //Division
 	Bigint operator/(Bigint const &);
-	Bigint operator%(Bigint const &);
 
     //Compare
     bool operator<(const Bigint &) const;
