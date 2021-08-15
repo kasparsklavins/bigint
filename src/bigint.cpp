@@ -287,6 +287,29 @@ Bigint &Bigint::operator*=(int const &b1)
    }
 }
 
+//Division
+Bigint Bigint::operator/(Bigint const &b)
+{
+	if (b == 0) return *this;
+	else
+	{
+		Bigint c = *this;
+		c.abs();
+		if (c == 0) return 0;
+		Bigint a = b;
+		a.abs();
+		Bigint res = 0;
+		while (c >= a)
+		{
+			c -= a;
+			res += 1;
+		}
+		res.positive = !(!(this->positive) ^ !(b.positive));
+		return res;
+	}
+}
+
+
 //Modulo
 int Bigint::operator%(int divisor)
 {
@@ -303,6 +326,24 @@ int Bigint::operator%(int divisor)
         return remains;
     else
         return -remains;
+}
+
+Bigint Bigint::operator%(Bigint const &b)
+{
+	if (b == 0) return *this;
+	else
+	{
+		Bigint c = *this;
+		c.abs();
+		if (c == 0) return 0;
+		Bigint a = b;
+		a.abs();
+		while (c >= a)
+		{
+			c -= a;
+		}
+		return c;
+	}
 }
 
 //Power

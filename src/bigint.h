@@ -2,6 +2,7 @@
 #define DODECAHEDRON_BIGINT_H_
 
 #include <vector>
+#include <cstddef>
 #include <iostream>
 #include <map>
 
@@ -42,6 +43,9 @@ public:
 
     //Modulo
     int operator%(int);
+    	//Division
+	Bigint operator/(Bigint const &);
+	Bigint operator%(Bigint const &);
 
     //Compare
     bool operator<(const Bigint &) const;
